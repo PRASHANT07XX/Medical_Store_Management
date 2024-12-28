@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Medical_storeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Medical_store.dbo.Login' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="UsarName" />
+            <PropertyRef Name="Password" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsarName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Login_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="1" />
+          <End Role="Registration1" Type="Self.Registration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Registration1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Medical_storeModelStoreContainer">
+          <EntitySet Name="Registration" EntityType="Self.Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Login].[id] AS [id], 
+    [Login].[UsarName] AS [UsarName], 
+    [Login].[Password] AS [Password]
+    FROM [dbo].[Login] AS [Login]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Login_Registration" Association="Self.FK_Login_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Registration" Association="Self.FK_Registration_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="Registration1" EntitySet="Registration" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Medical_storeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Logins" Relationship="Self.FK_Login_Registration" FromRole="Registration" ToRole="Login" />
+          <NavigationProperty Name="Registration1" Relationship="Self.FK_Registration_Registration" FromRole="Registration" ToRole="Registration1" />
+          <NavigationProperty Name="Registration2" Relationship="Self.FK_Registration_Registration" FromRole="Registration1" ToRole="Registration" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="UsarName" />
+            <PropertyRef Name="Password" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsarName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Registration" Relationship="Self.FK_Login_Registration" FromRole="Login" ToRole="Registration" />
+        </EntityType>
+        <Association Name="FK_Login_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="1" />
+          <End Role="Registration1" Type="Self.Registration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Registration1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Medical_storeEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Registrations" EntityType="Self.Registration" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <AssociationSet Name="FK_Login_Registration" Association="Self.FK_Login_Registration">
+            <End Role="Registration" EntitySet="Registrations" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Registration" Association="Self.FK_Registration_Registration">
+            <End Role="Registration" EntitySet="Registrations" />
+            <End Role="Registration1" EntitySet="Registrations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Medical_storeModelStoreContainer" CdmEntityContainer="Medical_storeEntities2">
+          <EntitySetMapping Name="Registrations">
+            <EntityTypeMapping TypeName="Medical_storeModel.Registration">
+              <MappingFragment StoreEntitySet="Registration">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="Medical_storeModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UsarName" ColumnName="UsarName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
